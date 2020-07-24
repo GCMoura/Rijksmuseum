@@ -1,27 +1,46 @@
-var content = document.querySelector('.content')
-
+//var letter = document.querySelectorAll('.letter')
+var colors = [
+    '#fff', //branco
+    '#fc4a1a', //laranja
+    '#f7b733', //amarelo
+    '#ffce00', //amarelo
+    'red', //vermelho
+    '#18121e', //navyblue
+    '#e37222', //laranja
+    '#0e0b16', //preto
+    'pink', //rosa
+    '#015249', //verde
+    '#3cc47c' //verde
+]
 var input = document.querySelector('.input')
-var btn = document.querySelector('.btn')
+var btnSearch = document.querySelector('.btn')
 var limpar = document.querySelector('.btn-limpar')
-var masterpieces = ''
+var btnMakersList = document.querySelector('.makers-list button')
+var btnMaker = document.querySelector('.button-maker')
+var content = document.querySelector('.content') 
 
+var titleSpan = document.querySelectorAll('.title span')
+var contentSpan = document.querySelectorAll('.content span')
+
+var masterpieces = ''
 const key = 'dMnRKstP'
 
 var search = input.value
 
-btn.addEventListener('click', getMaker)
+btnSearch.addEventListener('click', getMaker) //botão de pesquisa
 
-limpar.addEventListener('click', () => {
-    content.innerHTML = ''
-})
+limpar.addEventListener('click', cleanField) //botão para limpar a pesquisa
+
+btnMakersList.addEventListener('click', makersList) //botão com a lista de pintores
 
 getMuseum()
+changeColor()
 
-async function getMuseum() {
+async function getMuseum() { //faz a consulta à API do museu
 
     //const url2 = `http://www.rijksmuseum.nl/api/oai/${key}?verb=ListRecords`
     
-    const url = `https://www.rijksmuseum.nl/api/nl/collection?key=${key}&involvedMaker=${search}` 
+    const url = `https://www.rijksmuseum.nl/api/en/collection?key=${key}&involvedMaker=${search}` 
 
     const res = await fetch(url)
    
@@ -30,7 +49,27 @@ async function getMuseum() {
     console.log(masterpieces)
 }
 
-function getMaker(){
+function makersList(){ //cria a lista de botões com todos os pintores
+    var makersArray = masterpieces.facets[0].facets
+
+    for(let i = 0; i < makersArray.length; i++){
+        var button = document.createElement('button')
+        button.classList.add('btn-maker')
+        if(makersArray[i].key !== 'anonymous' && makersArray[i].key !== 'unknown') {
+            button.innerHTML = makersArray[i].key
+            btnMaker.appendChild(button)
+        }
+    }
+    var buttons = document.querySelectorAll('.btn-maker')
+
+    buttons.forEach(button => {
+        button.addEventListener('click', function(){getSets(button.firstChild.data)})
+    }) 
+}
+
+function getMaker(){ //faz a consulta pelo input, criando botões com o resultado
+    btnMaker.innerHTML = ''
+
     var makers = [] //para verificar se existe mais de um pintor com o mesmo nome
 
     search = input.value //pega o valor da pesquisa
@@ -55,7 +94,7 @@ function getMaker(){
             var button = document.createElement('button')
             button.classList.add('btn-maker')
             button.innerHTML = makers[i]
-            content.appendChild(button)
+            btnMaker.appendChild(button)
         }
         var buttons = document.querySelectorAll('.btn-maker')
 
@@ -67,9 +106,11 @@ function getMaker(){
     input.value = '' //limpa o campo de pesquisa
 }
 
-async function getSets(maker){
-    console.log(maker)
-    const urlMaker = `https://www.rijksmuseum.nl/api/nl/collection?key=${key}&involvedMaker=${maker}`
+async function getSets(maker){ //faz nova pesquisa à API, agora com o termo específico do pintor
+
+    btnMaker.innerHTML = ''
+    
+    const urlMaker = `https://www.rijksmuseum.nl/api/en/collection?key=${key}&involvedMaker=${maker}`
 
     const res = await fetch(urlMaker)
 
@@ -80,6 +121,9 @@ async function getSets(maker){
     var url = []
     var width = []
     var height = []
+
+    var setWidth
+    var setHeight
 
     for(let i = 0; i < masterpieces.artObjects.length; i++){
         if(masterpieces.artObjects[i].hasImage === true){
@@ -92,20 +136,32 @@ async function getSets(maker){
 
     for(let i = 0; i < url.length; i++){ //percorre o array de obras de arte para criar uma imagem com cada uma
 
-        var width = width[i] / 8 //mantem a proporção original da largura
+        if(width[i] / 5 > 360){
+            setWidth = '100%'
+        } else {
+            setWidth = width[i] / 5 //mantem a proporção original da largura
+        }
 
-        var height = height[i] / 8 //mantem a proporção original da altura
+        if(height[i] / 5 > 400){
+            setHeight = 400
+        } else {
+            setHeight = height[i] / 5 //mantem a proporção original da altura
+        }
 
         var figure = document.createElement('figure')
 
+        figure.classList.add('figure-style')
+
         var figureCaption = document.createElement('figcaption')
+
+        figureCaption.classList.add('figure-caption-style')
 
         var img = document.createElement('img')
 
         img.setAttribute('src', url[i])
         img.setAttribute('title', masterpieces.artObjects[i].title)
-        img.setAttribute('width', width)
-        img.setAttribute('height', height)
+        img.setAttribute('width', setWidth)
+        img.setAttribute('height', setHeight)
 
         figureCaption.innerHTML = masterpieces.artObjects[i].title
 
@@ -116,3 +172,17 @@ async function getSets(maker){
     }
 }
 
+function cleanField(){
+    content.innerHTML = ''
+    btnMaker.innerHTML = ''
+    // getMuseum()
+}
+
+function changeColor(){ //muda as cores das letras do título e do conteúdo
+    for(let i = 0; i < contentSpan.length; i++){
+        var color = Math.floor(Math.random() * colors.length)
+        contentSpan[i].style.color = colors[color]
+        titleSpan[i].style.color = colors[color]
+        colors.splice(color, 1)
+    }
+}
