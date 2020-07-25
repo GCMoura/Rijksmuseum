@@ -95,22 +95,19 @@ function getMaker(){ //faz a consulta pelo input, criando botões com o resultad
         }   
     }
 
-    if(makers.length === 1) { //se a pesquisa retornar apenas um pintor, segue para a função de mostrar a arte
-        getSets(makers[0]) 
-    } else { //para mais de um pintor com o nome da pesquisa, cria um botão para cada e chama a função do pintor selecionado
-        for(let i = 0; i < makers.length; i++){
-            var button = document.createElement('button')
-            button.classList.add('btn-maker')
-            button.innerHTML = makers[i]
-            btnMaker.appendChild(button)
-        }
-        var buttons = document.querySelectorAll('.btn-maker')
-
-        buttons.forEach(button => {
-            button.addEventListener('click', function(){getSets(button.firstChild.data)})
-        })
+    //cria um botão para cada e chama a função do pintor selecionado
+    for(let i = 0; i < makers.length; i++){
+        var button = document.createElement('button')
+        button.classList.add('btn-maker')
+        button.innerHTML = makers[i]
+        btnMaker.appendChild(button)
     }
+    var buttons = document.querySelectorAll('.btn-maker')
 
+    buttons.forEach(button => {
+        button.addEventListener('click', function(){getSets(button.firstChild.data)})
+    })
+    
     input.value = '' //limpa o campo de pesquisa
 }
 

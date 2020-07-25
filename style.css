@@ -9,7 +9,10 @@
 body{
     background: #0375b4;
 }
-
+.title a{
+    cursor: pointer;
+    text-decoration: none;
+}
 .title span{
     font-family: 'Permanent Marker', cursive;
     font-size: 24px;
@@ -36,6 +39,7 @@ body{
 }
 .input-button input{
     height: 25px;
+    text-align: center;
 }
 .makers-list{
     margin-top: 5px;
@@ -74,9 +78,29 @@ body{
     align-items: center;
     justify-content: center;
     margin: 0px 10px;
-    
 }
 .figure-caption-style{
     color: #fff;
     text-align: center;
+}
+@media(min-width: 700px){
+    .content {
+        margin-top: 40px;
+        width: 40%;
+        height: 100%;
+        margin-left: 30%;
+        box-shadow: 1px 1px 20px 5px #006094;
+    }
+    .button-maker{
+        width: 40%;
+    }
+    .title span{
+        font-size: 34px;    
+    }
+    .input-button button{
+        width: 90px;
+    }
+    .makers-list button{
+        width: 150px;
+    }
 }
