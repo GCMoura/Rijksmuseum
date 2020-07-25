@@ -1,4 +1,3 @@
-//var letter = document.querySelectorAll('.letter')
 var colors = [
     '#fff', //branco
     '#fc4a1a', //laranja
@@ -21,6 +20,8 @@ var content = document.querySelector('.content')
 
 var titleSpan = document.querySelectorAll('.title span')
 var contentSpan = document.querySelectorAll('.content span')
+
+var title = document.querySelector('.title')
 
 var masterpieces = ''
 const key = 'dMnRKstP'
@@ -46,10 +47,14 @@ async function getMuseum() { //faz a consulta à API do museu
    
     masterpieces = await res.json()
 
+    btnSearch.disabled = false
+    btnMakersList.disabled = false
+
     console.log(masterpieces)
 }
 
 function makersList(){ //cria a lista de botões com todos os pintores
+
     var makersArray = masterpieces.facets[0].facets
 
     for(let i = 0; i < makersArray.length; i++){
@@ -58,6 +63,7 @@ function makersList(){ //cria a lista de botões com todos os pintores
         if(makersArray[i].key !== 'anonymous' && makersArray[i].key !== 'unknown') {
             button.innerHTML = makersArray[i].key
             btnMaker.appendChild(button)
+            title.style.display = 'block'
         }
     }
     var buttons = document.querySelectorAll('.btn-maker')
@@ -69,6 +75,8 @@ function makersList(){ //cria a lista de botões com todos os pintores
 
 function getMaker(){ //faz a consulta pelo input, criando botões com o resultado
     btnMaker.innerHTML = ''
+
+    title.style.display = 'block'
 
     var makers = [] //para verificar se existe mais de um pintor com o mesmo nome
 
@@ -172,16 +180,17 @@ async function getSets(maker){ //faz nova pesquisa à API, agora com o termo esp
     }
 }
 
-function cleanField(){
+function cleanField(){ //limpa o conteúdo
+    btnSearch.disabled = true
+    btnMakersList.disabled = true
     content.innerHTML = ''
     btnMaker.innerHTML = ''
-    // getMuseum()
+    getMuseum()
 }
 
-function changeColor(){ //muda as cores das letras do título e do conteúdo
-    for(let i = 0; i < contentSpan.length; i++){
+function changeColor(){ //muda as cores das letras do título
+    for(let i = 0; i < titleSpan.length; i++){
         var color = Math.floor(Math.random() * colors.length)
-        contentSpan[i].style.color = colors[color]
         titleSpan[i].style.color = colors[color]
         colors.splice(color, 1)
     }

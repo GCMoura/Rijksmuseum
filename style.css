@@ -9,6 +9,7 @@
 body{
     background: #0375b4;
 }
+
 .title span{
     font-family: 'Permanent Marker', cursive;
     font-size: 24px;
@@ -66,14 +67,6 @@ body{
     background: #0375b4;
     margin-top: 25px;
 }   
-.content span{
-    flex-direction: row;
-    font-family: 'Permanent Marker', cursive;
-    font-size: 32px;
-}
-.content span:nth-child(1){
-    margin-top: 30px;
-}
 .figure.style{
     display: flex;
     flex-direction: column;
