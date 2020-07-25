@@ -38,8 +38,6 @@ getMuseum()
 changeColor()
 
 async function getMuseum() { //faz a consulta à API do museu
-
-    //const url2 = `http://www.rijksmuseum.nl/api/oai/${key}?verb=ListRecords`
     
     const url = `https://www.rijksmuseum.nl/api/en/collection?key=${key}&involvedMaker=${search}` 
 
@@ -49,6 +47,10 @@ async function getMuseum() { //faz a consulta à API do museu
 
     btnSearch.disabled = false
     btnMakersList.disabled = false
+
+    if(masterpieces.artObjects.length === 0){ //o retorno do fetch foi vazio
+        location.reload() //reload a página
+    }
 
     console.log(masterpieces)
 }
@@ -75,8 +77,6 @@ function makersList(){ //cria a lista de botões com todos os pintores
 
 function getMaker(){ //faz a consulta pelo input, criando botões com o resultado
     btnMaker.innerHTML = ''
-
-    title.style.display = 'block'
 
     var makers = [] //para verificar se existe mais de um pintor com o mesmo nome
 

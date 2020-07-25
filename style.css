@@ -57,6 +57,7 @@ body{
 .btn-maker{
     width: 80%;
     margin: 2px 0px;
+    border-radius: 5px;
 }
 .content{
     display: flex;
