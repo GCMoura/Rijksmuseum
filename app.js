@@ -13,7 +13,7 @@ var colors = [
 ]
 var input = document.querySelector('.input')
 var btnSearch = document.querySelector('.btn')
-var limpar = document.querySelector('.btn-limpar')
+var cleaner = document.querySelector('.btn-limpar')
 var btnMakersList = document.querySelector('.makers-list button')
 var btnMaker = document.querySelector('.button-maker')
 var content = document.querySelector('.content') 
@@ -25,21 +25,28 @@ var title = document.querySelector('.title')
 
 var masterpieces = ''
 const key = 'dMnRKstP'
+var page = 1
 
-var search = input.value
+var search = '' 
 
-btnSearch.addEventListener('click', getMaker) //botão de pesquisa
+var title = []
+var maker = []
 
-limpar.addEventListener('click', cleanField) //botão para limpar a pesquisa
+btnSearch.addEventListener('click', getMakerBySet) //botão de pesquisa
+
+cleaner.addEventListener('click', cleanField) //botão para limpar a pesquisa
 
 btnMakersList.addEventListener('click', makersList) //botão com a lista de pintores
 
-getMuseum()
+//getMuseum()
 changeColor()
 
 async function getMuseum() { //faz a consulta à API do museu
     
-    const url = `https://www.rijksmuseum.nl/api/en/collection?key=${key}&involvedMaker=${search}` 
+    //const url = `https://www.rijksmuseum.nl/api/en/collection?key=${key}&involvedMaker=${search}&ps=100` //pesquisa por nome do pintor
+    //const url = `https://www.rijksmuseum.nl/api/en/collection?key=${key}&q=${search}&ps=100`  //pesquisa por termo de busca
+
+    const url = `https://www.rijksmuseum.nl/api/en/collection?key=${key}&q=${search}&ps=100&p=${page}`
 
     const res = await fetch(url)
    
@@ -47,12 +54,19 @@ async function getMuseum() { //faz a consulta à API do museu
 
     btnSearch.disabled = false
     btnMakersList.disabled = false
+    
+    console.log(masterpieces)
+    console.log('total de obras: ', masterpieces.count)
+    console.log('pintor: ', masterpieces.artObjects[2].principalOrFirstMaker)
+    console.log('titulo: ', masterpieces.artObjects[2].title)
+    console.log('imagem: ', masterpieces.artObjects[2].webImage.url)
+    console.log('imagem: ', masterpieces.artObjects[2])
+
+
 
     if(masterpieces.artObjects.length === 0){ //o retorno do fetch foi vazio
         location.reload() //reload a página
     }
-
-    console.log(masterpieces)
 }
 
 function makersList(){ //cria a lista de botões com todos os pintores
@@ -65,7 +79,6 @@ function makersList(){ //cria a lista de botões com todos os pintores
         if(makersArray[i].key !== 'anonymous' && makersArray[i].key !== 'unknown') {
             button.innerHTML = makersArray[i].key
             btnMaker.appendChild(button)
-            title.style.display = 'block'
         }
     }
     var buttons = document.querySelectorAll('.btn-maker')
@@ -75,10 +88,49 @@ function makersList(){ //cria a lista de botões com todos os pintores
     }) 
 }
 
+async function getMakerBySet(){
+
+    search = input.value //pega o valor da pesquisa
+
+    const url = `https://www.rijksmuseum.nl/api/en/collection?key=${key}&q=${search}&ps=100&p=${page}`
+
+    const res = await fetch(url)
+   
+    masterpieces = await res.json()
+    
+    console.log(masterpieces)
+
+    var count = 1
+
+    for(let i = 0; i < masterpieces.artObjects.length; i++){
+        var id = masterpieces.artObjects[i].id.split('-')
+        if(id[1] === 'SK' ){
+            if(masterpieces.artObjects[i].principalOrFirstMaker !== "anonymous"){
+                createMakerButton(masterpieces.artObjects[i].title, masterpieces.artObjects[i].principalOrFirstMaker)
+                //console.log(count," - " , masterpieces.artObjects[i].title)
+                count++
+            }
+        }
+    }
+
+    page++
+    if(page <= Math.floor(masterpieces.count / 100 + 1)){
+        getMakerBySet()
+    }
+}
+
+function createMakerButton(title, maker){
+    //btnMaker.innerHTML = ''
+    var button = document.createElement('button')
+    button.classList.add('btn-maker')
+    button.innerHTML = `${title} - ${maker}`
+    btnMaker.appendChild(button)
+}
+
 function getMaker(){ //faz a consulta pelo input, criando botões com o resultado
     btnMaker.innerHTML = ''
 
-    var makers = [] //para verificar se existe mais de um pintor com o mesmo nome
+    var makers = [] //para verificar se existe mais de uma obra com o mesmo nome
 
     search = input.value //pega o valor da pesquisa
 
@@ -178,11 +230,8 @@ async function getSets(maker){ //faz nova pesquisa à API, agora com o termo esp
 }
 
 function cleanField(){ //limpa o conteúdo
-    btnSearch.disabled = true
-    btnMakersList.disabled = true
     content.innerHTML = ''
     btnMaker.innerHTML = ''
-    getMuseum()
 }
 
 function changeColor(){ //muda as cores das letras do título
