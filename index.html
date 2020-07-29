@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <title>Rijksmuseum</title>
 </head>
@@ -23,24 +24,15 @@
                 <span class="letter">m</span>
             </a>
         </div>
-        <div class="input-button">
-            <input type="text" class="input">
-            <button class="btn" >Buscar</button>
-            <button class="btn-limpar">Limpar</button>
-            <!-- <div class="makers-list">
-                <button >Pintores</button>
-            </div> -->
-        </div>
-        <div class="button-maker">
-        </div>
     </header>
+    <div class="input-button">
+        <input type="text" class="input">
+        <button class="btn btn-success" >Buscar</button>
+        <button class="btn-limpar btn btn-danger">Limpar</button>
+    </div>
+    <div class="button-maker"></div>
     <div class="content">
     <!-- 
-        fazer a busca por um termo e listar os pintores que possuem alguma obra com aquele termo. Ao clicar no pintor, mostra as obras sobre aquele termo de busca.
-        1 - pegar o termo pesquisado e fazer uma consulta (é provavel que possua mais de uma página - fazer uma lógica com o total e com a varia vel page para saber se chegou no final)
-        2 - criar botões de forma dinâmica com os pintores (é provável que mais de um autor possua mais de uma obra, fazer uma lógica para evitar pintores repetidos e evitar os anonimos)
-        3 - mostrar na tela as obras sobre o termo pesquisado e do pintor selecionado.
-
         começando com BK, NG, BI pode tirar
         fica com SK, RP
      -->
