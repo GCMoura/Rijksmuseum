@@ -1,16 +1,17 @@
 var colors = [
-    '#fff', //branco
+    '#purple', //roxo
     '#fc4a1a', //laranja
-    '#f7b733', //amarelo
-    '#ffce00', //amarelo
+    '#685f37', //acre
+    '#820c0f', //vinho
     'red', //vermelho
     '#18121e', //navyblue
     '#e37222', //laranja
     '#0e0b16', //preto
-    'pink', //rosa
+    '#15273d', //azul
     '#0375b4', //azul
-    '#3cc47c' //verde
+    '#115300' //verde
 ]
+var header = document.querySelector('.header')
 var input = document.querySelector('.input')
 var btnSearch = document.querySelector('.btn')
 var cleaner = document.querySelector('.btn-limpar')
@@ -44,7 +45,18 @@ async function getSetByMakerAndArt(){ //acessa a API e retorna as obras relacion
    
     masterpieces = await res.json()
     
-    //console.log(masterpieces)
+    console.log(masterpieces)
+    if(!masterpieces){
+        const message = 'O servidor não respondeu. Por favor, refaça sua pesquisa.'
+        showAlert(message, 'danger')
+        
+    }
+
+    if(masterpieces.count === 0){
+        const message = 'Não há obra de arte com o termo pesquisado. Por favor, refaça sua pesquisa.'
+        showAlert(message, 'primary')
+        cleanField()
+    }
 
     for(let i = 0; i < masterpieces.artObjects.length; i++){
         var id = masterpieces.artObjects[i].id.split('-')
@@ -83,7 +95,7 @@ async function getSetByAPI(title, objNumber){ //faz nova consulta a API retornan
     masterpieces = await res.json()
 
     console.log(masterpieces)
-
+    
     var level = masterpieces.levels.length - 2
     var size = 'z' + level.toString()
 
@@ -157,6 +169,7 @@ function cleanField(){ //limpa o conteúdo
     input.value = ''
     content.innerHTML = ''
     btnMaker.innerHTML = ''
+    content.style.display = 'block'
 }
 
 function changeColor(){ //muda as cores das letras do título
@@ -164,5 +177,26 @@ function changeColor(){ //muda as cores das letras do título
         var color = Math.floor(Math.random() * colors.length)
         titleSpan[i].style.color = colors[color]
         colors.splice(color, 1)
+    }
+}
+
+function showAlert(message, classType) {
+    const div = document.createElement('div')
+
+    div.className = `alert alert-${classType}`
+
+    div.appendChild(document.createTextNode(message))
+
+    title.style.display = 'none'
+
+    header.appendChild(div)
+
+    setTimeout(() => {
+        title.style.display = 'block'
+        document.querySelector('.alert').remove()
+    }, 3000);    
+    
+    if(classType === 'danger'){
+        window.location.reload()
     }
 }
