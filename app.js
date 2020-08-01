@@ -20,14 +20,14 @@ var content = document.querySelector('.content')
 
 var titleSpan = document.querySelectorAll('.title span')
 var contentSpan = document.querySelectorAll('.content span')
-
 var title = document.querySelector('.title')
 
 var masterpieces = ''
-const key = 'dMnRKstP'
 var page = 1
-
+var count = 0
 var search = '' 
+
+const key = 'dMnRKstP'
 
 btnSearch.addEventListener('click', getSetByMakerAndArt) //botão de pesquisa
 
@@ -42,6 +42,11 @@ async function getSetByMakerAndArt(){ //acessa a API e retorna as obras relacion
     const url = `https://www.rijksmuseum.nl/api/en/collection?key=${key}&q=${search}&ps=100&p=${page}`
 
     const res = await fetch(url)
+
+    if(res.status !== 200){
+        const message = 'O servidor não respondeu. Por favor, refaça sua pesquisa.'
+        showAlert(message, 'danger')
+    }
    
     masterpieces = await res.json()
     
@@ -49,22 +54,16 @@ async function getSetByMakerAndArt(){ //acessa a API e retorna as obras relacion
     if(!masterpieces){
         const message = 'O servidor não respondeu. Por favor, refaça sua pesquisa.'
         showAlert(message, 'danger')
-        
     }
-
-    if(masterpieces.count === 0){
-        const message = 'Não há obra de arte com o termo pesquisado. Por favor, refaça sua pesquisa.'
-        showAlert(message, 'primary')
-        cleanField()
-    }
-
+    
     for(let i = 0; i < masterpieces.artObjects.length; i++){
         var id = masterpieces.artObjects[i].id.split('-')
-        if(id[1] === 'SK' ){
+        if(id[1] === 'SK'){
             if(masterpieces.artObjects[i].principalOrFirstMaker !== "anonymous"){
                 createSetButton(masterpieces.artObjects[i].title, masterpieces.artObjects[i].principalOrFirstMaker, masterpieces.artObjects[i].objectNumber)
+                count++
             }
-        }
+        } 
     }
 
     page++
@@ -72,6 +71,11 @@ async function getSetByMakerAndArt(){ //acessa a API e retorna as obras relacion
         getSetByMakerAndArt()
     } else {
         page = 1
+        if(count === 0){ 
+            const message = 'Não há obra de arte com o termo pesquisado. Por favor, refaça sua pesquisa.'
+            showAlert(message, 'success')
+            cleanField()
+        }
     }
 }
 
@@ -170,6 +174,7 @@ function cleanField(){ //limpa o conteúdo
     content.innerHTML = ''
     btnMaker.innerHTML = ''
     content.style.display = 'block'
+    count = 0
 }
 
 function changeColor(){ //muda as cores das letras do título

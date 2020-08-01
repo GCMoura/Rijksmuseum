@@ -111,7 +111,9 @@ body{
     margin: 1px 10px;
 }
 .alert{
-    font-size: 12px;
+    text-align: center;
+    padding: 5px;
+    font-size: 14px;
     margin-top: 15px;
 }
 @media(min-width: 700px){
@@ -120,6 +122,8 @@ body{
     }
     .alert{
         margin-top: 15px;
+        padding: 10px;
+        font-size: 18px;
     }
     .input-input input{
         width: 400px;
