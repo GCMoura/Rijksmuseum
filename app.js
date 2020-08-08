@@ -27,6 +27,17 @@ var page = 1
 var count = 0
 var search = '' 
 
+var images = ['first', 'second', 'third']
+var position = 0
+
+var carousel = document.querySelector('.carousel')
+var viewWidth = carousel.offsetWidth
+var arrowRight = document.querySelector('#arrow-right')
+var arrowLeft = document.querySelector('#arrow-left')
+
+arrowLeft.addEventListener('click', carouselLeft)
+arrowRight.addEventListener('click', carouselRight)
+
 const key = 'dMnRKstP'
 
 btnSearch.addEventListener('click', getSetByMakerAndArt) //botão de pesquisa
@@ -49,8 +60,7 @@ async function getSetByMakerAndArt(){ //acessa a API e retorna as obras relacion
     }
    
     masterpieces = await res.json()
-    
-    console.log(masterpieces)
+
     if(!masterpieces){
         const message = 'O servidor não respondeu. Por favor, refaça sua pesquisa.'
         showAlert(message, 'danger')
@@ -203,5 +213,36 @@ function showAlert(message, classType) {
     
     if(classType === 'danger'){
         window.location.reload()
+    }
+}
+
+function carouselLeft(){
+    if(position === 0){
+        document.querySelector(`#${images[position]}`).style.transform = `translateX(-${viewWidth}px)` //first
+        document.querySelector(`#${images[position+1]}`).style.transform = `translateX(-${viewWidth}px)` //second
+        position = 1
+    } else if(position === 1){
+        document.querySelector(`#${images[position]}`).style.transform = `translateX(-${viewWidth*2}px)` //second
+        document.querySelector(`#${images[position+1]}`).style.transform = `translateX(-${viewWidth*2}px)` //third
+        position = 2
+    } else if(position === 2){
+        document.querySelector(`#${images[position]}`).style.transform = `translateX(-${viewWidth*3}px)` //third
+        document.querySelector(`#${images[0]}`).style.transform = `translateX(0px)` //first
+        position = 0
+    }
+}
+function carouselRight(){
+    if(position === 0){
+        document.querySelector(`#${images[position]}`).style.transform = `translateX(${viewWidth}px)` //first
+        document.querySelector(`#${images[position+1]}`).style.transform = `translateX(-${viewWidth}px)` //second
+        position = 1
+    } else if(position === 1){
+        document.querySelector(`#${images[position]}`).style.transform = `translateX(${viewWidth*2}px)` //second
+        document.querySelector(`#${images[position+1]}`).style.transform = `translateX(-${viewWidth*2}px)` //third
+        position = 2
+    } else if(position === 2){
+        document.querySelector(`#${images[position]}`).style.transform = `translateX(${viewWidth*3}px)` //third
+        document.querySelector(`#${images[0]}`).style.transform = `translateX(0px)` //first
+        position = 0
     }
 }
