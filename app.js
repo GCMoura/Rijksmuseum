@@ -38,12 +38,13 @@ var arrowLeft = document.querySelector('#arrow-left')
 arrowLeft.addEventListener('click', carouselLeft)
 arrowRight.addEventListener('click', carouselRight)
 
+content.style.display = 'none'
+
 const key = 'dMnRKstP'
 
 btnSearch.addEventListener('click', getSetByMakerAndArt) //botão de pesquisa
 
 cleaner.addEventListener('click', cleanField) //botão para limpar a pesquisa
-
 changeColor()
 
 async function getSetByMakerAndArt(){ //acessa a API e retorna as obras relacionadas ao termo pesquisado
@@ -70,7 +71,12 @@ async function getSetByMakerAndArt(){ //acessa a API e retorna as obras relacion
         var id = masterpieces.artObjects[i].id.split('-')
         if(id[1] === 'SK'){
             if(masterpieces.artObjects[i].principalOrFirstMaker !== "anonymous"){
-                createSetButton(masterpieces.artObjects[i].title, masterpieces.artObjects[i].principalOrFirstMaker, masterpieces.artObjects[i].objectNumber)
+                createSetButton(
+                    masterpieces.artObjects[i].title, 
+                    masterpieces.artObjects[i].principalOrFirstMaker, 
+                    masterpieces.artObjects[i].objectNumber
+                )
+                carousel.style.opacity = 0
                 count++
             }
         } 
@@ -90,6 +96,7 @@ async function getSetByMakerAndArt(){ //acessa a API e retorna as obras relacion
 }
 
 function createSetButton(title, maker, objNumber){ //cria os botões com as obras encontradas de acordo com o termo pesquisado
+
     var button = document.createElement('button')
     button.classList.add('btn')
     button.classList.add('btn-primary')
@@ -108,7 +115,10 @@ async function getSetByAPI(title, objNumber){ //faz nova consulta a API retornan
    
     masterpieces = await res.json()
 
-    console.log(masterpieces)
+    if(!masterpieces){
+        const message = 'O servidor não respondeu. Por favor, refaça sua pesquisa.'
+        showAlert(message, 'danger')
+    }
     
     var level = masterpieces.levels.length - 2
     var size = 'z' + level.toString()
@@ -183,7 +193,8 @@ function cleanField(){ //limpa o conteúdo
     input.value = ''
     content.innerHTML = ''
     btnMaker.innerHTML = ''
-    content.style.display = 'block'
+    content.style.display = 'none'
+    carousel.style.opacity = 1
     count = 0
 }
 
