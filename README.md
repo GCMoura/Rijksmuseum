@@ -37,7 +37,7 @@ It is necessary to obtain an API key by registering for a [Rijksstudio account](
   ```
 
 ## Clone
-Clone this repository to yout local machine using https://github.com/GCMoura/Rijksmuseum.git.
+Clone this repository to your local machine using https://github.com/GCMoura/Rijksmuseum.git.
 
 ## Deploy
 This application was deployed using [Vercel](https://vercel.com/).
