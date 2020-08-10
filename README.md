@@ -6,6 +6,7 @@ This application aims to promote access to masterpieces, especially paintings, f
   - [Table of Contents](#table-of-contents)
   - [Screenshots (mobile layout)](#screenshots-mobile-layout)
   - [Getting Started](#getting-started)
+  - [How this work](#how-this-work)
   - [API](#api)
   - [Clone](#clone)
   - [Deploy](#deploy)
@@ -20,6 +21,13 @@ This application aims to promote access to masterpieces, especially paintings, f
 This page was created using only Vanilla Javascript, without frameworks or libraries, therefore for visualizing this page access:
 
 https://rijksmuseum-amsterdam.vercel.app/
+
+## How this work
+In the input, put a keyword, that can be a simple word or the name of the artist. 
+The 'Buscar' button provides a list with the masterpieces with some relationship with the keyword.
+When clicking in the art chosen the masterpiece is shown. 
+The 'X' button returns to the list of masterpieces.
+The 'Limpar' button cleans the input field and the previous results and let the application ready for the next search.
 
 ## API
 This application uses APIs available in [Rijksmuseum data](https://data.rijksmuseum.nl/). 
