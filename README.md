@@ -13,7 +13,8 @@ This application aims to promote access to masterpieces, especially paintings, f
   - [License](#license)
 
 ## Screenshots (mobile layout)
-![Screenshot-1](users/gabriel/desktop/github/Rijksmuseum/screenshots/img-1.png?raw=true)
+![Screenshot-1](https://raw.githubusercontent.com/GCMoura/Rijksmuseum/master/screenshots/screenshot-1.png)
+![Screenshot-2](https://raw.githubusercontent.com/GCMoura/Rijksmuseum/master/screenshots/screenshot-2.png)
 
 ## Getting Started
 This page was created using only Vanilla Javascript, without frameworks or libraries, therefore for visualizing this page access:
