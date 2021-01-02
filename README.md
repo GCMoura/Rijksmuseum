@@ -20,7 +20,7 @@ This application aims to promote access to masterpieces, especially paintings, f
 ## Getting Started
 This page was created using only Vanilla Javascript, without frameworks or libraries, therefore for visualizing this page access:
 
-https://rijksmuseum-amsterdam.vercel.app/
+[Rijksmuseum](https://rijksmuseum-amsterdam.vercel.app/)
 
 ## How it works
 In the input, put a keyword, that can be a simple word or the name of the artist. 

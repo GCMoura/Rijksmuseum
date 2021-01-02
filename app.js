@@ -1,3 +1,5 @@
+const key = require('./config/config')
+
 var colors = [
     '#purple', //roxo
     '#fc4a1a', //laranja
@@ -39,8 +41,6 @@ arrowLeft.addEventListener('click', carouselLeft)
 arrowRight.addEventListener('click', carouselRight)
 
 content.style.display = 'none'
-
-const key = 'dMnRKstP'
 
 btnSearch.addEventListener('click', getSetByMakerAndArt) //botão de pesquisa
 
@@ -210,7 +210,7 @@ function showAlert(message, classType) {
     const div = document.createElement('div')
 
     div.className = `alert alert-${classType}`
-
+    
     div.appendChild(document.createTextNode(message))
 
     title.style.display = 'none'
