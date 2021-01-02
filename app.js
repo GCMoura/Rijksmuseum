@@ -1,4 +1,4 @@
-const key = require('./config/config')
+import key from './config/config'
 
 var colors = [
     '#purple', //roxo
