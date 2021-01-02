@@ -1,4 +1,4 @@
-import key from './config/config'
+import key from './config'
 
 var colors = [
     '#purple', //roxo
