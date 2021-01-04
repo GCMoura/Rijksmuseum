@@ -48,7 +48,7 @@ cleaner.addEventListener('click', cleanField) //botão para limpar a pesquisa
 changeColor()
 
 async function getSetByMakerAndArt(){ //acessa a API e retorna as obras relacionadas ao termo pesquisado
-
+    console.log(key)
     search = input.value //pega o valor da pesquisa
 
     const url = `https://www.rijksmuseum.nl/api/en/collection?key=${key}&q=${search}&ps=100&p=${page}`
