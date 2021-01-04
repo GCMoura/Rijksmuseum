@@ -1,4 +1,4 @@
-import key from './config'
+const key = 'dMnRKstP'
 
 var colors = [
     '#purple', //roxo
