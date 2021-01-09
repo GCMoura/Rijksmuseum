@@ -1,4 +1,7 @@
-const key = 'dMnRKstP'
+const BASE_URL = window.location.hostname.includes('localhost')
+? 'http://localhost:5000'
+: 'http://localhost:5000'
+//: 'https://seek-movie.herokuapp.com'
 
 var colors = [
     '#purple', //roxo
@@ -50,49 +53,49 @@ changeColor()
 async function getSetByMakerAndArt(){ //acessa a API e retorna as obras relacionadas ao termo pesquisado
     
     search = input.value //pega o valor da pesquisa
+    var response
 
-    const url = `https://www.rijksmuseum.nl/api/en/collection?key=${key}&q=${search}&ps=100&p=${page}`
-
-    const res = await fetch(url)
-
-    if(res.status !== 200){
-        const message = 'O servidor não respondeu. Por favor, refaça sua pesquisa.'
-        showAlert(message, 'danger')
-    }
-   
-    masterpieces = await res.json()
-
-    if(!masterpieces){
-        const message = 'O servidor não respondeu. Por favor, refaça sua pesquisa.'
-        showAlert(message, 'danger')
-    }
-    
-    for(let i = 0; i < masterpieces.artObjects.length; i++){
-        var id = masterpieces.artObjects[i].id.split('-')
-        if(id[1] === 'SK'){
-            if(masterpieces.artObjects[i].principalOrFirstMaker !== "anonymous"){
-                createSetButton(
-                    masterpieces.artObjects[i].title, 
-                    masterpieces.artObjects[i].principalOrFirstMaker, 
-                    masterpieces.artObjects[i].objectNumber
-                )
-                carousel.style.opacity = 0
-                count++
-            }
-        } 
-    }
-
-    page++
-    if(page <= Math.floor(masterpieces.count / 100 + 1)){
-        getSetByMakerAndArt()
-    } else {
-        page = 1
-        if(count === 0){ 
-            const message = 'Não há obra de arte com o termo pesquisado. Por favor, refaça sua pesquisa.'
-            showAlert(message, 'success')
-            cleanField()
+    fetch(`${BASE_URL}/${search}/${page}`, {
+        method: 'GET',
+        params: {
+            search,
+            page
         }
-    }
+      })
+      .then(async (serverResponse) => {
+        if (serverResponse) {
+            response = await serverResponse.json();
+
+            masterpieces = response
+
+            for(let i = 0; i < masterpieces.artObjects.length; i++){
+                var id = masterpieces.artObjects[i].id.split('-')
+                if(id[1] === 'SK'){
+                    if(masterpieces.artObjects[i].principalOrFirstMaker !== "anonymous"){
+                        createSetButton(
+                            masterpieces.artObjects[i].title, 
+                            masterpieces.artObjects[i].principalOrFirstMaker, 
+                            masterpieces.artObjects[i].objectNumber
+                        )
+                        carousel.style.opacity = 0
+                        count++
+                    }
+                } 
+            }
+
+            page++
+            if(page <= Math.floor(masterpieces.count / 100 + 1)){
+                getSetByMakerAndArt()
+            } else {
+                page = 1
+                if(count === 0){ 
+                    const message = 'Não há obra de arte com o termo pesquisado. Por favor, refaça sua pesquisa.'
+                    showAlert(message, 'success')
+                    cleanField()
+                }
+            }
+          } 
+        });
 }
 
 function createSetButton(title, maker, objNumber){ //cria os botões com as obras encontradas de acordo com o termo pesquisado
@@ -109,25 +112,30 @@ function createSetButton(title, maker, objNumber){ //cria os botões com as obra
 
 async function getSetByAPI(title, objNumber){ //faz nova consulta a API retornando a obra selecionada
 
-    const url = `https://www.rijksmuseum.nl/api/en/collection/${objNumber}/tiles?key=${key}`
+    var response
 
-    const res = await fetch(url)
-   
-    masterpieces = await res.json()
-
-    if(!masterpieces){
-        const message = 'O servidor não respondeu. Por favor, refaça sua pesquisa.'
-        showAlert(message, 'danger')
-    }
-    
-    var level = masterpieces.levels.length - 2
-    var size = 'z' + level.toString()
-
-    for(let i = 0; i < masterpieces.levels.length; i++){
-        if(masterpieces.levels[i].name === size){
-            showSet(title, masterpieces.levels[i])
+    fetch(`${BASE_URL}/${objNumber}`, {
+        method: 'GET',
+        params: {
+            objNumber
         }
-    }     
+      })
+      .then(async (serverResponse) => {
+        if (serverResponse) {
+            response = await serverResponse.json();
+
+            masterpieces = response
+        
+            var level = masterpieces.levels.length - 2
+            var size = 'z' + level.toString()
+        
+            for(let i = 0; i < masterpieces.levels.length; i++){
+                if(masterpieces.levels[i].name === size){
+                    showSet(title, masterpieces.levels[i])
+                }
+            }     
+        }
+    })
 }
 
 function showSet(title, set){ //estiliza a imagem a ser mostrada na tela
@@ -221,10 +229,7 @@ function showAlert(message, classType) {
         title.style.display = 'block'
         document.querySelector('.alert').remove()
     }, 3000);    
-    
-    if(classType === 'danger'){
-        window.location.reload()
-    }
+
 }
 
 function carouselLeft(){
