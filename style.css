@@ -126,12 +126,14 @@ body{
     margin-top: 15px;
     background-repeat: no-repeat;
     background-size: cover;
-    text-align: center;
+    display: block;
 }
 .description{
+    text-align: center;
     color: #fff;
     font-size: 14px;
     margin-top: 5px;
+    display: block;
 }
 @media(min-width: 700px){
     body{

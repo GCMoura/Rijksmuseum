@@ -48,50 +48,57 @@ async function getSetByMakerAndArt(){ //acessa a API e retorna as obras relacion
     
     search = input.value //pega o valor da pesquisa
     var response
-
-    fetch(`${BASE_URL}/${search}/${page}`, {
-        method: 'GET',
-        params: {
-            search,
-            page
-        }
-      })
-      .then(async (serverResponse) => {
-        if (serverResponse) {
-            response = await serverResponse.json();
-
-            masterpieces = response
-
-            for(let i = 0; i < masterpieces.artObjects.length; i++){
-                var id = masterpieces.artObjects[i].id.split('-')
-                if(id[1] === 'SK'){
-                    if(masterpieces.artObjects[i].principalOrFirstMaker !== "anonymous"){
-                        createSetButton(
-                            masterpieces.artObjects[i].title, 
-                            masterpieces.artObjects[i].principalOrFirstMaker, 
-                            masterpieces.artObjects[i].objectNumber
-                        )
-                        count++
-                    }
-                } 
+    if(search === ''){
+        const message = 'Por favor digite um termo de busca'
+        showAlert(message, 'danger')
+    } else {
+        fetch(`${BASE_URL}/${search}/${page}`, {
+            method: 'GET',
+            params: {
+                search,
+                page
             }
-
-            page++
-            if(page <= Math.floor(masterpieces.count / 100 + 1)){
-                getSetByMakerAndArt()
-            } else {
-                page = 1
-                if(count === 0){ 
-                    const message = 'Não há obra de arte com o termo pesquisado. Por favor, refaça sua pesquisa.'
-                    showAlert(message, 'danger')
-                    cleanField()
+          })
+          .then(async (serverResponse) => {
+            if (serverResponse) {
+                response = await serverResponse.json();
+    
+                masterpieces = response
+    
+                for(let i = 0; i < masterpieces.artObjects.length; i++){
+                    var id = masterpieces.artObjects[i].id.split('-')
+                    if(id[1] === 'SK'){
+                        if(masterpieces.artObjects[i].principalOrFirstMaker !== "anonymous"){
+                            createSetButton(
+                                masterpieces.artObjects[i].title, 
+                                masterpieces.artObjects[i].principalOrFirstMaker, 
+                                masterpieces.artObjects[i].objectNumber
+                            )
+                            count++
+                        }
+                    } 
                 }
-            }
-          } 
-        });
+    
+                page++
+                if(page <= Math.floor(masterpieces.count / 100 + 1)){
+                    getSetByMakerAndArt()
+                } else {
+                    page = 1
+                    if(count === 0){ 
+                        const message = 'Não há obra de arte com o termo pesquisado. Por favor, refaça sua pesquisa.'
+                        showAlert(message, 'danger')
+                        cleanField()
+                    }
+                }
+              } 
+            });
+    }
 }
 
 function createSetButton(title, maker, objNumber){ //cria os botões com as obras encontradas de acordo com o termo pesquisado
+  
+    cover.style.display = 'none'
+    description.style.display = 'none'
 
     var button = document.createElement('button')
     button.classList.add('btn')
@@ -196,6 +203,8 @@ function cleanField(){ //limpa o conteúdo
     btnMaker.innerHTML = ''
     content.style.display = 'none'
     count = 0
+    page = 1
+    changeLandingCover()
 }
 
 function changeColor(){ //muda as cores das letras do título
@@ -207,6 +216,10 @@ function changeColor(){ //muda as cores das letras do título
 }
 
 async function changeLandingCover(){ //muda a obra de arte da página principal
+
+    cover.style.display = 'block'
+    description.style.display = 'block'
+
     var artistNumber = Math.floor(Math.random() * artist.length)
     var flag = true
     var chosenArtist = artist[artistNumber]
@@ -224,9 +237,6 @@ async function changeLandingCover(){ //muda a obra de arte da página principal
             response = await serverResponse.json();
 
             masterpieces = response
-
-            console.log(masterpieces)
-
             var urlImage = masterpieces.artObjects[0].webImage.url
             var title = masterpieces.artObjects[0].longTitle
 
