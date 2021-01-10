@@ -20,7 +20,7 @@ This application aims to promote access to masterpieces, especially paintings, f
 ## Getting Started
 This page was created using only Vanilla Javascript, without frameworks or libraries, therefore for visualizing this page access:
 
-[Rijksmuseum](https://rijksmuseum-amsterdam.vercel.app/)
+[Rijksmuseum](https://gcmoura.github.io/Rijksmuseum/)
 
 ## How it works
 In the input, put a keyword, that can be a simple word or the name of the artist. 
@@ -32,7 +32,7 @@ The 'Limpar' button cleans the input field and the previous results and let the 
 ## API
 This application uses APIs available in [Rijksmuseum data](https://data.rijksmuseum.nl/). 
 These data services provide access to object metadata, bibliographic data, controlled vocabularies, and content generated from users.
-It is necessary to obtain an API key by registering for a [Rijksstudio account](https://www.rijksmuseum.nl/en/rijksstudio).
+For use is necessary to obtain an API key by registering for a [Rijksstudio account](https://www.rijksmuseum.nl/en/rijksstudio).
 
 - ### Examples
   * To search for a keyword:
@@ -48,7 +48,7 @@ It is necessary to obtain an API key by registering for a [Rijksstudio account](
 Clone this repository to your local machine using https://github.com/GCMoura/Rijksmuseum.git.
 
 ## Deploy
-This application was deployed using [Vercel](https://vercel.com/).
+The backend was deployed using [Heroku](https://heroku.com). And the frontend was deployed using [GitHub Pages](https://pages.github.com/).
 
 ## Contributing
 If you would like to contribute, please fork the repository and use a feature branch. Pull requests are warmly welcome.

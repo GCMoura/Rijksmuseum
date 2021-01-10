@@ -98,6 +98,7 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100vh;
 }
@@ -170,9 +171,6 @@ body{
     .input-button button{
         width: 90px;
         margin: 0px 70px;
-    }
-    .figure-style img {
-        margin-top: 60px;
     }
     .makers-list button{
         width: 150px;
