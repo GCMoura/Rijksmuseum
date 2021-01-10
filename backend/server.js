@@ -34,6 +34,18 @@ router.get('/:objNumber', (req, res) => {
   })
 })
 
+router.get('/:chosenArtist/:flag/:page', async (req, res) => {
+
+  const { chosenArtist } = req.params
+  const { page } = req.params
+
+  axios.get(`https://www.rijksmuseum.nl/api/en/collection?key=${api_key}&q=${chosenArtist}&ps=100&p=${page}`)
+    .then(response => {
+      res.send(response.data)
+    })
+  
+})
+
 server.use(router)
 
 server.listen(port, () => {

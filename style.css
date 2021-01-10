@@ -8,6 +8,10 @@
 }
 body{
     background: #151516;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 .title a{
     cursor: pointer;
@@ -90,42 +94,6 @@ body{
     width: 100%;
     background: #151516;
 }   
-.carousel{
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-    margin-top: 50px;
-    overflow: hidden;
-}
-.carousel img{
-    width: 100vw;
-    height: 60vh;
-    z-index: 0;
-    transition: 0.4s;
-}
-.arrows {
-    display: flex;
-    justify-content: space-between;
-    position: absolute;
-    top: 40%;
-    z-index: 5000;
-}
-.arrows svg:first-child{
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-    z-index: 5000;
-}
-.arrows svg:last-child{
-    margin-left: calc(100vw - 60px);
-    width: 30px;
-    height: 30px;
-    cursor: pointer;
-    z-index: 5000;
-}
-.arrows svg:hover{
-    color: #fff;
-}
 .figure-style{
     display: flex;
     flex-direction: column;
@@ -152,6 +120,19 @@ body{
     font-size: 14px;
     margin-top: 15px;
 }
+.cover{
+    width: 80%;
+    height: 65vh;
+    margin-top: 15px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;
+}
+.description{
+    color: #fff;
+    font-size: 14px;
+    margin-top: 5px;
+}
 @media(min-width: 700px){
     body{
         background: #151516;
@@ -170,33 +151,7 @@ body{
         width: 40%;
         margin-left: 30%;
     }
-    .carousel{
-        width: 40vw;
-        margin-top: 3px;
-        margin-left: 30%;
-    }
-    .carousel img{
-        width: 40vw;
-        height: 90vh;
-    }
-    .arrows #arrow-left{
-        width: 40px;
-        height: 40px;
-        position: absolute;
-        top: 100px;
-        left: -1px;
-    }
-    .arrows #arrow-right{
-        width: 40px;
-        height: 40px;
-        position: absolute;
-        top: 100px;
-        left: -798px;
-    }
-    .arrows svg:hover{
-        color: #fff;
-    }
-
+    
     .button-maker{
         width: 100%;
     }
@@ -219,5 +174,13 @@ body{
     }
     .makers-list button{
         width: 150px;
+    }
+    .cover{
+        width: 30%;
+        height: 70vh;
+        margin-top: 10px;
+    }
+    .description{
+        font-size: 18px;
     }
 }

@@ -26,22 +26,15 @@ var content = document.querySelector('.content')
 var titleSpan = document.querySelectorAll('.title span')
 var contentSpan = document.querySelectorAll('.content span')
 var title = document.querySelector('.title')
+var cover = document.querySelector('.cover')
+var description = document.querySelector('.description')
 
 var masterpieces = ''
 var page = 1
 var count = 0
 var search = '' 
 
-var images = ['first', 'second', 'third']
-var position = 0
-
-var carousel = document.querySelector('.carousel')
-var viewWidth = carousel.offsetWidth
-var arrowRight = document.querySelector('#arrow-right')
-var arrowLeft = document.querySelector('#arrow-left')
-
-arrowLeft.addEventListener('click', carouselLeft)
-arrowRight.addEventListener('click', carouselRight)
+var artist = ['vincent van gogh', 'rembrandt van rijn', 'johannes vermeer']
 
 content.style.display = 'none'
 
@@ -49,6 +42,7 @@ btnSearch.addEventListener('click', getSetByMakerAndArt) //botão de pesquisa
 
 cleaner.addEventListener('click', cleanField) //botão para limpar a pesquisa
 changeColor()
+changeLandingCover()
 
 async function getSetByMakerAndArt(){ //acessa a API e retorna as obras relacionadas ao termo pesquisado
     
@@ -77,7 +71,6 @@ async function getSetByMakerAndArt(){ //acessa a API e retorna as obras relacion
                             masterpieces.artObjects[i].principalOrFirstMaker, 
                             masterpieces.artObjects[i].objectNumber
                         )
-                        carousel.style.opacity = 0
                         count++
                     }
                 } 
@@ -90,7 +83,7 @@ async function getSetByMakerAndArt(){ //acessa a API e retorna as obras relacion
                 page = 1
                 if(count === 0){ 
                     const message = 'Não há obra de arte com o termo pesquisado. Por favor, refaça sua pesquisa.'
-                    showAlert(message, 'success')
+                    showAlert(message, 'danger')
                     cleanField()
                 }
             }
@@ -202,7 +195,6 @@ function cleanField(){ //limpa o conteúdo
     content.innerHTML = ''
     btnMaker.innerHTML = ''
     content.style.display = 'none'
-    carousel.style.opacity = 1
     count = 0
 }
 
@@ -213,6 +205,37 @@ function changeColor(){ //muda as cores das letras do título
         colors.splice(color, 1)
     }
 }
+
+async function changeLandingCover(){ //muda a obra de arte da página principal
+    var artistNumber = Math.floor(Math.random() * artist.length)
+    var flag = true
+    var chosenArtist = artist[artistNumber]
+    var response
+
+    fetch(`${BASE_URL}/${chosenArtist}/${flag}/${page}`, {
+        method: 'GET',
+        params: {
+            chosenArtist,
+            page
+        }
+      })
+      .then(async (serverResponse) => {
+        if (serverResponse) {
+            response = await serverResponse.json();
+
+            masterpieces = response
+
+            console.log(masterpieces)
+
+            var urlImage = masterpieces.artObjects[0].webImage.url
+            var title = masterpieces.artObjects[0].longTitle
+
+            cover.style.backgroundImage = `url("${urlImage}")`
+            description.innerHTML = `${title}`
+        }
+    })
+}
+
 
 function showAlert(message, classType) {
     const div = document.createElement('div')
@@ -230,35 +253,4 @@ function showAlert(message, classType) {
         document.querySelector('.alert').remove()
     }, 3000);    
 
-}
-
-function carouselLeft(){
-    if(position === 0){
-        document.querySelector(`#${images[position]}`).style.transform = `translateX(-${viewWidth}px)` //first
-        document.querySelector(`#${images[position+1]}`).style.transform = `translateX(-${viewWidth}px)` //second
-        position = 1
-    } else if(position === 1){
-        document.querySelector(`#${images[position]}`).style.transform = `translateX(-${viewWidth*2}px)` //second
-        document.querySelector(`#${images[position+1]}`).style.transform = `translateX(-${viewWidth*2}px)` //third
-        position = 2
-    } else if(position === 2){
-        document.querySelector(`#${images[position]}`).style.transform = `translateX(-${viewWidth*3}px)` //third
-        document.querySelector(`#${images[0]}`).style.transform = `translateX(0px)` //first
-        position = 0
-    }
-}
-function carouselRight(){
-    if(position === 0){
-        document.querySelector(`#${images[position]}`).style.transform = `translateX(${viewWidth}px)` //first
-        document.querySelector(`#${images[position+1]}`).style.transform = `translateX(-${viewWidth}px)` //second
-        position = 1
-    } else if(position === 1){
-        document.querySelector(`#${images[position]}`).style.transform = `translateX(${viewWidth*2}px)` //second
-        document.querySelector(`#${images[position+1]}`).style.transform = `translateX(-${viewWidth*2}px)` //third
-        position = 2
-    } else if(position === 2){
-        document.querySelector(`#${images[position]}`).style.transform = `translateX(${viewWidth*3}px)` //third
-        document.querySelector(`#${images[0]}`).style.transform = `translateX(0px)` //first
-        position = 0
-    }
 }
