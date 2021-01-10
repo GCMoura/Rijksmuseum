@@ -1,7 +1,6 @@
 const BASE_URL = window.location.hostname.includes('localhost')
 ? 'http://localhost:5000'
-: 'http://localhost:5000'
-//: 'https://seek-movie.herokuapp.com'
+: 'https://rijksmuseum.herokuapp.com'
 
 var colors = [
     '#purple', //roxo
