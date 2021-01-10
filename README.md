@@ -55,3 +55,6 @@ If you would like to contribute, please fork the repository and use a feature br
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+---
+Made by Gabriel Moura. [Get in touch!](https://www.linkedin.com/in/gabriel-moura-b45b90150/)
